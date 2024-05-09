@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinite Divs</title>
+<style>
+#container {
+  margin: 20px auto;
+  width: 80%;
+  height: 100vh;
+}
+
+.clone {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid black;
+  background-color: white;
+}
+
+#diaryopendate {
+  appearance: none;
+  color: black;
+  background: white;
+  border: none;
+}
+</style>
+</head>
+<body>  
+<div id="container">
+  <div class="clone">
+    <div>
+      <input readonly type="date" id="diaryopendate">
+    </div>
+  </div>
+</div>
+
+<script>
+var ab=0;
+function setDefaultDate() {
+  ab = ab + 1;
+  var date = new Date();
+  date.setDate(date.getDate()+ab);
+  var formattedDate = date.toISOString().split('T')[0];
+  document.getElementById('diaryopendate').value = formattedDate;
+}
+
+
+// Function to clone the div
+function cloneDiv() {
+  var container = document.getElementById('container');
+  var clone = container.querySelector('.clone').cloneNode(true);
+  container.appendChild(clone);
+  setDefaultDate();
+}
+window.onload = function() {
+  setDefaultDate();
+  var clonedDivCount = localStorage.getItem('clonedDivCount');
+  if (clonedDivCount) {
+    clonedDivCount = parseInt(clonedDivCount);
+    for (var i = 1; i < clonedDivCount; i++) {
+      cloneDiv();
+    }
+  }
+  setTimeout(function() {
+    setInterval(cloneDiv,10000);
+  }, 10000);
+}
+
+</script>
+</body>
+</html>
